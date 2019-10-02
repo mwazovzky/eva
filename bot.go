@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/joho/godotenv"
 	tgbotapi "gopkg.in/telegram-bot-api.v4"
@@ -67,6 +68,21 @@ const startMsg = `Искусственный интеллект приветст
 `
 const searchMsg = `Введи описание требований, по возможности максимально подробное.`
 const badCommandMsg = `Затрудняюсь ответить на этот вопрос. Давай поговорим о чем-нибудь другом...`
+const noMatchMsg = `К сожалению специалистов соответствующих указанным требованиям не найдено в нашей галактике.`
+const tryAgainMsg = `Попробуем еще раз? [/start - вернуться в начало]`
+
+var badTechnologies = []string{"Angular", "Python", "Perl"}
+var goodTechnologies = []string{"PHP", "Laravel", "JavaScript", "Vue", "Vue.js", "GO"}
+
+func findMatch(cmd string, mask []string) (string, error) {
+	for _, v := range mask {
+		if strings.Contains(strings.ToLower(cmd), strings.ToLower(v)) {
+			return v, nil
+		}
+	}
+
+	return "", fmt.Errorf("no match found")
+}
 
 func handle(cmd string, bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	switch cmd {
@@ -74,6 +90,7 @@ func handle(cmd string, bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 		fallthrough
 	case "/help":
 		sendMessage(bot, update, startMsg)
+		search = false
 	case "who are you?":
 		sendMessage(bot, update, "Я искусственный интеллект. А ты человек?")
 	case "how are you?":
@@ -85,8 +102,18 @@ func handle(cmd string, bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 		search = true
 	default:
 		if search {
-			sendMessage(bot, update, "https://mwazovzky.github.io/about/")
-			search = false
+			if _, err := findMatch(cmd, goodTechnologies); err == nil {
+				sendMessage(bot, update, "https://mwazovzky.github.io/about/")
+			} else {
+				sendMessage(bot, update, noMatchMsg)
+			}
+
+			if v, err := findMatch(cmd, badTechnologies); err == nil {
+				msg := fmt.Sprintf("FFS! %s sucks...", v)
+				sendMessage(bot, update, msg)
+			}
+
+			sendMessage(bot, update, tryAgainMsg)
 		} else {
 			sendMessage(bot, update, badCommandMsg)
 		}
