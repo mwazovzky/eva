@@ -58,8 +58,22 @@ func main() {
 	}
 }
 
+const startMsg = `Искусственный интеллект приветствует тебя!  
+Я прохожу стажировку по специальности IT Recruitment, специализируюсь на поиске web разработчиков и готов помочь тебе, человек. 
+Можешь выбрать одну из команд или просто поговорить со мной
+/start вернуться в начало
+/help помощь
+/search поиск кандидатов
+`
+const searchMsg = `Введи описание требований, по возможности максимально подробное.`
+const badCommandMsg = `Затрудняюсь ответить на этот вопрос. Давай поговорим о чем-нибудь другом...`
+
 func handle(cmd string, bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	switch cmd {
+	case "/start":
+		fallthrough
+	case "/help":
+		sendMessage(bot, update, startMsg)
 	case "who are you?":
 		sendMessage(bot, update, "Я искусственный интеллект. А ты человек?")
 	case "how are you?":
@@ -67,14 +81,14 @@ func handle(cmd string, bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 	case "/hello":
 		sendMessage(bot, update, "Привет! Как дела?")
 	case "/search":
-		sendMessage(bot, update, "Введи описание требований, по возможности максимально подробное.")
+		sendMessage(bot, update, searchMsg)
 		search = true
 	default:
 		if search {
 			sendMessage(bot, update, "https://mwazovzky.github.io/about/")
 			search = false
 		} else {
-			sendMessage(bot, update, "Затрудняюсь ответить на этот вопрос. Давай поговорим о чем-нибудь другом...")
+			sendMessage(bot, update, badCommandMsg)
 		}
 	}
 }
