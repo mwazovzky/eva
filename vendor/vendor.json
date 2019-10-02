@@ -1,0 +1,25 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "wwEGs3bPrm/zZT0o9gkQ3cJsNu8=",
+			"path": "github.com/joho/godotenv",
+			"revision": "5c0e6c6ab1a0a9ef0a8822cba3a05d62f7dad941",
+			"revisionTime": "2019-02-04T04:41:09Z"
+		},
+		{
+			"checksumSHA1": "t8jzPFIv4DNACv+cuZoigNmjPLQ=",
+			"path": "github.com/technoweenie/multipartstreamer",
+			"revision": "a90a01d73ae432e2611d178c18367fbaa13e0154",
+			"revisionTime": "2013-10-20T00:18:33Z"
+		},
+		{
+			"checksumSHA1": "RpSF7uMF4kpc3vZabAJxACILrnw=",
+			"path": "gopkg.in/telegram-bot-api.v4",
+			"revision": "9860bdfd3a171ceafb6e1eafa163482a6ef92643",
+			"revisionTime": "2018-10-08T19:45:45Z"
+		}
+	],
+	"rootPath": "github.com/mwazovzky/eva"
+}
